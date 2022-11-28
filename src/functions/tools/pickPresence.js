@@ -7,17 +7,17 @@ const activities = [
   //
   {
     type: 3,
-    text: "the tardis with admiration",
+    text: "Sers l'enclave",
     status: "online",
   },
   {
     type: 2,
-    text: "commands",
+    text: "Se recharge...",
     status: "idle",
   },
   {
     type: 0,
-    text: "save the doctor",
+    text: "Plonge des intruts dans du VEF",
     status: "dnd",
   },
 ];
