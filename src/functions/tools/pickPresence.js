@@ -17,7 +17,7 @@ const activities = [
   },
   {
     type: 0,
-    text: "plonger des intruts dans du VEF",
+    text: "plonger des intrus dans du VEF",
     status: "dnd",
   },
 ];
