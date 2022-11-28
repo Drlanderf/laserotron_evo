@@ -9,7 +9,7 @@ welcomeCanvas.context.font = "68px sans-serif";
 welcomeCanvas.context.fillStyle = "#ffffff";
 Canvas.loadImage(`${process.cwd()}/assets/img/The_Enclave_Flag_(Fallout).png`).then(async (img) => {
   welcomeCanvas.context.drawImage(img, 0, 0, 1024, 500);
-  welcomeCanvas.context.fillText("Bienvenue", 350, 75);
+  //welcomeCanvas.context.fillText("Bienvenue", 350, 75);
   welcomeCanvas.context.beginPath();
   welcomeCanvas.context.arc(512, 245, 128, 0, Math.PI * 2, true);
   welcomeCanvas.context.stroke();
@@ -39,11 +39,11 @@ module.exports = {
     canvas.context.textAlign = "center";
     canvas.context.fillText(member.user.tag.toUpperCase(), 512, 425);
     canvas.context.font = "28px sans-serif";
-    canvas.context.fillText(
+    /*canvas.context.fillText(
       `You are the ${member.guild.memberCount}th member.s`,
       512,
       475
-    );
+    );*/
     canvas.context.beginPath();
     canvas.context.arc(512, 245, 119, 0, Math.PI * 2, true);
     canvas.context.closePath();
