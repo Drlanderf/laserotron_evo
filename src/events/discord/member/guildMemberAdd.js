@@ -7,7 +7,7 @@ welcomeCanvas.create = Canvas.createCanvas(1024, 500);
 welcomeCanvas.context = welcomeCanvas.create.getContext("2d");
 welcomeCanvas.context.font = "68px sans-serif";
 welcomeCanvas.context.fillStyle = "#ffffff";
-Canvas.loadImage(`${process.cwd()}/assets/img/gurxiz5vmq771.gif`).then(async (img) => {
+Canvas.loadImage(`${process.cwd()}/assets/img/The_Enclave_Flag_(Fallout).png`).then(async (img) => {
   welcomeCanvas.context.drawImage(img, 0, 0, 1024, 500);
   welcomeCanvas.context.fillText("Bienvenue", 350, 75);
   welcomeCanvas.context.beginPath();
