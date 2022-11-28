@@ -7,17 +7,17 @@ const activities = [
   //
   {
     type: 3,
-    text: "Sers l'enclave",
+    text: "le drapeau de l'enclave",
     status: "online",
   },
   {
-    type: 2,
-    text: "Se recharge...",
+    type: 0,
+    text: "se recharger...",
     status: "idle",
   },
   {
     type: 0,
-    text: "Plonge des intruts dans du VEF",
+    text: "plonger des intruts dans du VEF",
     status: "dnd",
   },
 ];
