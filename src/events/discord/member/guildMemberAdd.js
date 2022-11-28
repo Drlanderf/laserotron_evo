@@ -34,17 +34,18 @@ module.exports = {
     const MyCustomWelcomeMessage = guildProfile.customWelcomeMessage;
     const welcomeChannel = client.channels.cache.get(`${MyWelcomeChannelID}`);
 
-    let canvas = welcomeCanvas;
-    canvas.context.font = "42px sans-serif";
+    //let canvas = welcomeCanvas;
+    /*canvas.context.font = "42px sans-serif";
     canvas.context.textAlign = "center";
     canvas.context.fillText(member.user.tag.toUpperCase(), 512, 425);
-    canvas.context.font = "28px sans-serif";
+    canvas.context.font = "28px sans-serif";*/
+
     /*canvas.context.fillText(
       `You are the ${member.guild.memberCount}th member.s`,
       512,
       475
     );*/
-    canvas.context.beginPath();
+    /*canvas.context.beginPath();
     canvas.context.arc(512, 245, 119, 0, Math.PI * 2, true);
     canvas.context.closePath();
     canvas.context.clip();
@@ -53,11 +54,11 @@ module.exports = {
       member.user.displayAvatarURL({ size: 1024, format: "png" })
     ).then((img) => {
       canvas.context.drawImage(img, 393, 125, 238, 238);
-    });
+    });*/
 
     const attachment = new AttachmentBuilder(
-      await canvas.create.encode("png"),
-      { name: "profile-image.png" }
+      await welcomeCanvas.create.encode("png"),
+      { name: "made_by_doc_landerf.png" }
     );
 
     try {
