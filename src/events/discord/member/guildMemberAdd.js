@@ -35,7 +35,7 @@ module.exports = {
     let canvas = welcomeCanvas;
     canvas.context.font = "42px sans-serif";
     canvas.context.textAlign = "center";
-    canvas.context.fillText(member.user.tag.toUpperCase(), 512, 420);
+    canvas.context.fillText(member.user.tag, 512, 420);
     canvas.context.font = "28px sans-serif";
     canvas.context.beginPath();
     canvas.context.arc(512, 245, 119, 0, Math.PI * 2, true);
