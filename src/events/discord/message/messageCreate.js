@@ -8,7 +8,7 @@ module.exports = {
    * @param {Client} client
    */
   async execute(message, client) {
-    if (message.author.bot) {
+    /*if (message.author.bot) {
       console.warn(
         `[Event] messageCreate : ${chalk.red("from another bot, do anything.")}`
       );
@@ -26,6 +26,6 @@ module.exports = {
       } catch (e) {
         console.error(e);
       }
-    }
+    }*/
   },
 };
