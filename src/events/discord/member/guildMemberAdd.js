@@ -35,14 +35,8 @@ module.exports = {
     let canvas = welcomeCanvas;
     canvas.context.font = "42px sans-serif";
     canvas.context.textAlign = "center";
-    canvas.context.fillText(member.user.tag.toUpperCase(), 512, 425);
+    canvas.context.fillText(member.user.tag.toUpperCase(), 512, 420);
     canvas.context.font = "28px sans-serif";
-
-    canvas.context.fillText(
-      `You are the ${member.guild.memberCount}th member.s`,
-      512,
-      475
-    );
     canvas.context.beginPath();
     canvas.context.arc(512, 245, 119, 0, Math.PI * 2, true);
     canvas.context.closePath();
@@ -61,7 +55,7 @@ module.exports = {
 
     try {
       welcomeChannel.send({
-        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}`,
+        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage},\n Tu es le ${member.guild.memberCount}éme membre.s`,
         files: [attachment],
       });
     } catch (error) {
