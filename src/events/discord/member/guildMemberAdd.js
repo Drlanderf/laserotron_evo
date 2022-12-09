@@ -1,20 +1,11 @@
-const Canvas = require("@napi-rs/canvas");
-const { AttachmentBuilder, GuildMember, Client } = require("discord.js");
+const Canvas = require("canvas");
+const {
+  AttachmentBuilder,
+  GuildMember,
+  Client,
+  DiscordAPIError,
+} = require("discord.js");
 const Guild = require(`../../../schemas/guild`);
-
-const welcomeCanvas = {};
-welcomeCanvas.create = Canvas.createCanvas(1024, 500);
-welcomeCanvas.context = welcomeCanvas.create.getContext("2d");
-welcomeCanvas.context.font = "68px sans-serif";
-welcomeCanvas.context.fillStyle = "#ffffff";
-Canvas.loadImage(`${process.cwd()}/assets/img/The_Enclave_Flag_(Fallout).png`).then(async (img) => {
-  welcomeCanvas.context.drawImage(img, 0, 0, 1024, 500);
-  //welcomeCanvas.context.fillText("Bienvenue", 350, 75);
-  welcomeCanvas.context.beginPath();
-  welcomeCanvas.context.arc(512, 245, 128, 0, Math.PI * 2, true);
-  welcomeCanvas.context.stroke();
-  welcomeCanvas.context.fill();
-});
 
 module.exports = {
   name: "guildMemberAdd",
@@ -23,7 +14,6 @@ module.exports = {
    * @param {Client} client
    */
   async execute(member, client) {
-
     let guildProfile = await Guild.findOne({
       guildId: member.guild.id,
     });
@@ -32,26 +22,44 @@ module.exports = {
     const MyCustomWelcomeMessage = guildProfile.customWelcomeMessage;
     const welcomeChannel = client.channels.cache.get(`${MyWelcomeChannelID}`);
 
-    let canvas = welcomeCanvas;
-    canvas.context.font = "42px sans-serif";
-    canvas.context.textAlign = "center";
-    canvas.context.fillText(member.user.tag, 512, 420);
-    canvas.context.font = "28px sans-serif";
-    canvas.context.beginPath();
-    canvas.context.arc(512, 245, 119, 0, Math.PI * 2, true);
-    canvas.context.closePath();
-    canvas.context.clip();
+    const canvas = Canvas.createCanvas(1024, 500);
 
+    let ctx = canvas.getContext("2d");
+
+    //Setup of the background
+    const background = await Canvas.loadImage(
+      `${process.cwd()}/assets/img/The_Enclave_Flag_(Fallout).png`
+    );
+    ctx.drawImage(background, 0, 0, 1024, 500);
+    ctx.beginPath();
+    ctx.arc(512, 245, 128, 0, Math.PI * 2, true);
+    ctx.stroke();
+    ctx.fill();
+
+    //Name of the user in the canvas
+    ctx.font = "42px sans-serif";
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "center";
+    ctx.fillText(member.user.tag.toUpperCase(), 512, 420);
+
+    //Avatar of the user in the canvas
+    ctx.beginPath();
+    ctx.arc(512, 245, 119, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.clip();
+    let avatar = await Canvas.loadImage(
+      member.user.displayAvatarURL({ size: 1024, format: "png" })
+    );
+    ctx.drawImage(avatar, 393, 125, 238, 238);
     await Canvas.loadImage(
       member.user.displayAvatarURL({ size: 1024, format: "png" })
     ).then((img) => {
       canvas.context.drawImage(img, 393, 125, 238, 238);
     });
 
-    const attachment = new AttachmentBuilder(
-      await welcomeCanvas.create.encode("png"),
-      { name: "made_by_doc_landerf.png" }
-    );
+    let attachment = new AttachmentBuilder(canvas.toBuffer(), {
+      name: "made_by_doc_landerf.png",
+    });
 
     try {
       welcomeChannel.send({
