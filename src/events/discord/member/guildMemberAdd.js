@@ -1,4 +1,4 @@
-const Canvas = require("canvas");
+const Canvas = require("@napi-rs/canvas");
 const {
   AttachmentBuilder,
   GuildMember,
@@ -14,56 +14,53 @@ module.exports = {
    * @param {Client} client
    */
   async execute(member, client) {
+    /**************************************************************************/
     let guildProfile = await Guild.findOne({
       guildId: member.guild.id,
     });
-
+    /**************************************************************************/
     const MyWelcomeChannelID = guildProfile.guildJoinChannel;
     const MyCustomWelcomeMessage = guildProfile.customWelcomeMessage;
     const welcomeChannel = client.channels.cache.get(`${MyWelcomeChannelID}`);
-
+    /**************************************************************************/
     const canvas = Canvas.createCanvas(1024, 500);
-
     let ctx = canvas.getContext("2d");
-
     //Setup of the background
     const background = await Canvas.loadImage(
-      `${process.cwd()}/assets/img/The_Enclave_Flag_(Fallout).png`
+      `${process.cwd()}/assets/img/bg.png`
     );
     ctx.drawImage(background, 0, 0, 1024, 500);
     ctx.beginPath();
     ctx.arc(512, 245, 128, 0, Math.PI * 2, true);
     ctx.stroke();
     ctx.fill();
-
+    /**************************************************************************/
     //Name of the user in the canvas
     ctx.font = "42px sans-serif";
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
     ctx.fillText(member.user.tag.toUpperCase(), 512, 420);
-
+    /**************************************************************************/
     //Avatar of the user in the canvas
     ctx.beginPath();
     ctx.arc(512, 245, 119, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.clip();
+    //Taking the avatar picture
     let avatar = await Canvas.loadImage(
       member.user.displayAvatarURL({ size: 1024, format: "png" })
     );
     ctx.drawImage(avatar, 393, 125, 238, 238);
-    await Canvas.loadImage(
-      member.user.displayAvatarURL({ size: 1024, format: "png" })
-    ).then((img) => {
-      canvas.context.drawImage(img, 393, 125, 238, 238);
-    });
-
-    let attachment = new AttachmentBuilder(canvas.toBuffer(), {
+    /**************************************************************************/
+    //Making a new attachment with a custom name signature
+    const attachment = new AttachmentBuilder(await canvas.encode(`png`), {
       name: "made_by_doc_landerf.png",
     });
-
+    /**************************************************************************/
+    //Try to send the welcome message
     try {
       welcomeChannel.send({
-        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage},\n Tu es le ${member.guild.memberCount}éme membre.s`,
+        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}`,
         files: [attachment],
       });
     } catch (error) {
