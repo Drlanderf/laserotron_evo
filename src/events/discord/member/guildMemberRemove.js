@@ -11,22 +11,14 @@ module.exports = {
       guildId: member.guild.id,
     });
     const MyLeavingChannelID = guildProfile.guildLeavingChannel;
-    const LeavingMessages = [
-      guildProfile.customLeavingMessage00,
-      guildProfile.customLeavingMessage01,
-      guildProfile.customLeavingMessage02,
-      guildProfile.customLeavingMessage03,
-    ];
-    //console.log("[Event] guildMemberRemove : successfully apply");
+    console.log("[Event] guildMemberRemove : successfully apply");
     if (!MyLeavingChannelID) {
-      //console.error(`[${member.guild.id}] No Leaving Channel configured.`);
+      console.error(`[${member.guild.id}] No Leaving Channel configured.`);
       return;
     }
     const WelcomeChannel = client.channels.cache.get(MyLeavingChannelID);
     try {
-      const n = Math.floor(Math.random() * (LeavingMessages.length - 1));
-      const Message = LeavingMessages[n];
-      WelcomeChannel.send(`<@${member.id}> ${Message}`);
+      WelcomeChannel.send(`<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`);
     } catch (error) {
       console.log(error);
     }
