@@ -21,6 +21,7 @@ module.exports = {
     /**************************************************************************/
     const MyWelcomeChannelID = guildProfile.guildJoinChannel;
     const MyCustomWelcomeMessage = guildProfile.customWelcomeMessage;
+    const myGuildCountChannel = guildProfile.guildCountChannel;
     const welcomeChannel = client.channels.cache.get(`${MyWelcomeChannelID}`);
     /**************************************************************************/
     const canvas = Canvas.createCanvas(1024, 500);
@@ -57,8 +58,11 @@ module.exports = {
       name: "made_by_doc_landerf.png",
     });
     /**************************************************************************/
-    //Try to send the welcome message
+    //Try to send the welcome message + update the counter
     try {
+      //let channel = client.channels.cache.get(`1088547089807581204`); //=> brut version
+      let channel = client.channels.cache.get(`${myGuildCountChannel}`); //=>DB version
+      channel.setName(`Membres : ${member.guild.memberCount}`)
       welcomeChannel.send({
         content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}`,
         files: [attachment],
