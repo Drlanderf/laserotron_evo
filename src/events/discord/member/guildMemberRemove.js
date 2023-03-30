@@ -1,5 +1,6 @@
 const { GuildMember, Client } = require("discord.js");
 const Guild = require(`../../../schemas/guild`);
+const { getCounterChannelName } = require("../../../functions/tools/getCounterChannelName");
 module.exports = {
   name: "guildMemberRemove",
   /**
@@ -12,18 +13,32 @@ module.exports = {
     });
     const MyLeavingChannelID = guildProfile.guildLeavingChannel;
     const myGuildCountChannel = guildProfile.guildCountChannel;
+    //const countChannelName = client.channels.cache.get(`1088547089807581204`); //=> brut version
+    const countChannelName = client.channels.cache.get(`${myGuildCountChannel}`); //=>DB version
     console.log("[Event] guildMemberRemove : successfully apply");
     if (!MyLeavingChannelID) {
       console.error(`[${member.guild.id}] No Leaving Channel configured.`);
       return;
     }
     const WelcomeChannel = client.channels.cache.get(MyLeavingChannelID);
-    //Try to send the welcome message + update the counter
+    /* ------------------------------------------------------------
+              Update the counter
+              ID :	channel,
+              DATA use : myGuildCountChannel.
+         ------------------------------------------------------------ */
+    if(myGuildCountChannel) {
+      const newCountName = getCounterChannelName(`${member.guild.memberCount}`);
+      countChannelName.setName(newCountName);
+    }
+    /* ------------------------------------------------------------
+          Try to send the welcome message
+       ------------------------------------------------------------ */
     try {
-
-      //let channel = client.channels.cache.get(`1088547089807581204`); //=> brut version
-      let channel = client.channels.cache.get(`${myGuildCountChannel}`); //=> DB version
-      channel.setName(`Membres : ${member.guild.memberCount}`)
+      /* ------------------------------------------------------------
+              Send the message to the welcome channel
+              ID :	welcomeChannel,
+              DATA use : member.id.
+         ------------------------------------------------------------ */
       WelcomeChannel.send(`<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`);
     } catch (error) {
       console.log(error);

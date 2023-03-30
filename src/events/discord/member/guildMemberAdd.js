@@ -6,6 +6,7 @@ const {
   DiscordAPIError,
 } = require("discord.js");
 const Guild = require(`../../../schemas/guild`);
+const { getCounterChannelName } = require("../../../functions/tools/getCounterChannelName");
 
 module.exports = {
   name: "guildMemberAdd",
@@ -23,6 +24,8 @@ module.exports = {
     const MyCustomWelcomeMessage = guildProfile.customWelcomeMessage;
     const myGuildCountChannel = guildProfile.guildCountChannel;
     const welcomeChannel = client.channels.cache.get(`${MyWelcomeChannelID}`);
+    //const countChannelName = client.channels.cache.get(`1088547089807581204`); //=> brut version
+    const countChannelName = client.channels.cache.get(`${myGuildCountChannel}`); //=>DB version
     /**************************************************************************/
     const canvas = Canvas.createCanvas(1024, 500);
     let ctx = canvas.getContext("2d");
@@ -57,12 +60,24 @@ module.exports = {
     const attachment = new AttachmentBuilder(await canvas.encode(`png`), {
       name: "made_by_doc_landerf.png",
     });
-    /**************************************************************************/
-    //Try to send the welcome message + update the counter
+    /* ------------------------------------------------------------
+              Update the counter
+              ID :	channel,
+              DATA use : myGuildCountChannel.
+         ------------------------------------------------------------ */
+    if(myGuildCountChannel) {
+      const newCountName = getCounterChannelName(`${member.guild.memberCount}`);
+      countChannelName.setName(newCountName);
+    }
+    /* ------------------------------------------------------------
+      Try to send the welcome message
+     ------------------------------------------------------------ */
     try {
-      //let channel = client.channels.cache.get(`1088547089807581204`); //=> brut version
-      let channel = client.channels.cache.get(`${myGuildCountChannel}`); //=>DB version
-      channel.setName(`Membres : ${member.guild.memberCount}`)
+      /* ------------------------------------------------------------
+              Send the message to the welcome channel
+              ID :	welcomeChannel,
+              DATA use : member, embed, file.
+         ------------------------------------------------------------ */
       welcomeChannel.send({
         content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}`,
         files: [attachment],
