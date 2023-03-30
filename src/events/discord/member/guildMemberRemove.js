@@ -1,6 +1,8 @@
 const { GuildMember, Client } = require("discord.js");
 const Guild = require(`../../../schemas/guild`);
-const { getCounterChannelName } = require("../../../functions/tools/getCounterChannelName");
+const {
+  getCounterChannelName,
+} = require("../../../functions/tools/getCounterChannelName");
 module.exports = {
   name: "guildMemberRemove",
   /**
@@ -14,7 +16,9 @@ module.exports = {
     const MyLeavingChannelID = guildProfile.guildLeavingChannel;
     const myGuildCountChannel = guildProfile.guildCountChannel;
     //const countChannelName = client.channels.cache.get(`1088547089807581204`); //=> brut version
-    const countChannelName = client.channels.cache.get(`${myGuildCountChannel}`); //=>DB version
+    const countChannelName = client.channels.cache.get(
+      `${myGuildCountChannel}`
+    ); //=>DB version
     console.log("[Event] guildMemberRemove : successfully apply");
     if (!MyLeavingChannelID) {
       console.error(`[${member.guild.id}] No Leaving Channel configured.`);
@@ -26,7 +30,7 @@ module.exports = {
               ID :	channel,
               DATA use : myGuildCountChannel.
          ------------------------------------------------------------ */
-    if(myGuildCountChannel) {
+    if (myGuildCountChannel) {
       const newCountName = getCounterChannelName(`${member.guild.memberCount}`);
       countChannelName.setName(newCountName);
     }
@@ -39,7 +43,9 @@ module.exports = {
               ID :	welcomeChannel,
               DATA use : member.id.
          ------------------------------------------------------------ */
-      WelcomeChannel.send(`<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`);
+      WelcomeChannel.send(
+        `<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`
+      );
     } catch (error) {
       console.log(error);
     }

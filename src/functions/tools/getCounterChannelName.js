@@ -2,10 +2,10 @@ function getCounterChannelName(memberCount) {
   let name;
 
   switch (true) {
-    case (memberCount < 1000):
+    case memberCount < 1000:
       name = `👥 ${memberCount} membres`;
       break;
-    case (memberCount < 1000000):
+    case memberCount < 1000000:
       name = `👥 ${Math.floor(memberCount / 1000)}k membres Discord`;
       break;
     default:
@@ -14,4 +14,5 @@ function getCounterChannelName(memberCount) {
   }
 
   return name;
-}module.exports = { getCounterChannelName };
+}
+module.exports = { getCounterChannelName };

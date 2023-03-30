@@ -6,7 +6,9 @@ const {
   DiscordAPIError,
 } = require("discord.js");
 const Guild = require(`../../../schemas/guild`);
-const { getCounterChannelName } = require("../../../functions/tools/getCounterChannelName");
+const {
+  getCounterChannelName,
+} = require("../../../functions/tools/getCounterChannelName");
 
 module.exports = {
   name: "guildMemberAdd",
@@ -25,7 +27,9 @@ module.exports = {
     const myGuildCountChannel = guildProfile.guildCountChannel;
     const welcomeChannel = client.channels.cache.get(`${MyWelcomeChannelID}`);
     //const countChannelName = client.channels.cache.get(`1088547089807581204`); //=> brut version
-    const countChannelName = client.channels.cache.get(`${myGuildCountChannel}`); //=>DB version
+    const countChannelName = client.channels.cache.get(
+      `${myGuildCountChannel}`
+    ); //=>DB version
     /**************************************************************************/
     const canvas = Canvas.createCanvas(1024, 500);
     let ctx = canvas.getContext("2d");
@@ -65,7 +69,7 @@ module.exports = {
               ID :	channel,
               DATA use : myGuildCountChannel.
          ------------------------------------------------------------ */
-    if(myGuildCountChannel) {
+    if (myGuildCountChannel) {
       const newCountName = getCounterChannelName(`${member.guild.memberCount}`);
       countChannelName.setName(newCountName);
     }
