@@ -2,9 +2,11 @@ const ascii = require("ascii-table");
 const { loadCommands } = require("../../../functions/handlers/handleCommands");
 const { checkDBGuildId } = require("../../../functions/mongo/checkDBGuildId");
 const { pickPresence } = require("../../../functions/tools/pickPresence");
+const wait = require("timers/promises").setTimeout;
 module.exports = {
   name: "ready",
   async execute(client) {
+    await wait(1000);
     const table = new ascii().setHeading("Logged into Discord as");
     table.addRow(`${client.user.tag} - ${client.user.id}`);
     console.log(table.toString());

@@ -22,6 +22,7 @@ module.exports = {
       guildId: member.guild.id,
     });
     /**************************************************************************/
+    const guild = member.guild;
     const MyWelcomeChannelID = guildProfile.guildJoinChannel;
     const MyCustomWelcomeMessage = guildProfile.customWelcomeMessage;
     const myGuildCountChannel = guildProfile.guildCountChannel;
@@ -30,6 +31,14 @@ module.exports = {
     const countChannelName = client.channels.cache.get(
       `${myGuildCountChannel}`
     ); //=>DB version
+    /*try {
+      const invites = await guild.invites.fetch(); // récupère les invites du serveur
+      // récupère l'invite qui a été utilisée pour rejoindre le serveur
+      const invite = invites.find(inv => guild.invites.cache.get(inv.code).uses < inv.uses);
+      const inviter = invite.inviter;
+    }catch (error) {
+      console.log(error);
+    }*/ //=> not working
     /**************************************************************************/
     const canvas = Canvas.createCanvas(1024, 500);
     let ctx = canvas.getContext("2d");
@@ -64,28 +73,31 @@ module.exports = {
     const attachment = new AttachmentBuilder(await canvas.encode(`png`), {
       name: "made_by_doc_landerf.png",
     });
-    /* ------------------------------------------------------------
-              Update the counter
-              ID :	channel,
-              DATA use : myGuildCountChannel.
-         ------------------------------------------------------------ */
-    if (myGuildCountChannel) {
-      const newCountName = getCounterChannelName(`${member.guild.memberCount}`);
-      countChannelName.setName(newCountName);
-    }
+
     /* ------------------------------------------------------------
       Try to send the welcome message
      ------------------------------------------------------------ */
     try {
       /* ------------------------------------------------------------
+              Update the counter
+              ID :	channel,
+              DATA use : myGuildCountChannel.
+         ------------------------------------------------------------ */
+      /*if (myGuildCountChannel) {
+        const newCountName = getCounterChannelName(`${member.guild.memberCount}`);
+        countChannelName.setName(newCountName);
+      }*/ //=> not working
+      /* ------------------------------------------------------------
               Send the message to the welcome channel
               ID :	welcomeChannel,
               DATA use : member, embed, file.
          ------------------------------------------------------------ */
-      welcomeChannel.send({
-        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}`,
+      const msg = await welcomeChannel.send({
+        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}\n:arrow_right: **Invité par** : *WORK IN PROGRESS*\n:arrow_right: **Le serveur compte désormait :** `+getCounterChannelName(`${member.guild.memberCount}`),
         files: [attachment],
       });
+      const reactionEmoji = msg.guild.emojis.cache.find(emoji => emoji.name === 'DrapeauEnclave');
+      await msg.react(reactionEmoji);
     } catch (error) {
       console.log(error);
     }

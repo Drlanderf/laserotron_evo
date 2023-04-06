@@ -11,6 +11,7 @@ console.log(`|   Thanks for using my bot     |`);
 client.configs = new Collection();
 client.events = new Collection();
 client.commands = new Collection();
+client.invites = new Collection();
 (async () => {
     try {
         loadEvents(client);

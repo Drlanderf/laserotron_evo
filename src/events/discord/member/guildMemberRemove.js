@@ -30,10 +30,10 @@ module.exports = {
               ID :	channel,
               DATA use : myGuildCountChannel.
          ------------------------------------------------------------ */
-    if (myGuildCountChannel) {
+    /*if (myGuildCountChannel) {
       const newCountName = getCounterChannelName(`${member.guild.memberCount}`);
       countChannelName.setName(newCountName);
-    }
+    }*/ //=> not working
     /* ------------------------------------------------------------
           Try to send the welcome message
        ------------------------------------------------------------ */
@@ -43,11 +43,15 @@ module.exports = {
               ID :	welcomeChannel,
               DATA use : member.id.
          ------------------------------------------------------------ */
-      WelcomeChannel.send(
+      const msg = await WelcomeChannel.send(
         `<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`
       );
+      const reactionEmoji = msg.guild.emojis.cache.find(emoji => emoji.name === 'VEF');
+      await msg.react(reactionEmoji);
+
     } catch (error) {
       console.log(error);
     }
+
   },
 };
