@@ -31,14 +31,12 @@ module.exports = {
     const countChannelName = client.channels.cache.get(
       `${myGuildCountChannel}`
     ); //=>DB version
-    /*try {
-      const invites = await guild.invites.fetch(); // récupère les invites du serveur
-      // récupère l'invite qui a été utilisée pour rejoindre le serveur
-      const invite = invites.find(inv => guild.invites.cache.get(inv.code).uses < inv.uses);
-      const inviter = invite.inviter;
-    }catch (error) {
-      console.log(error);
-    }*/ //=> not working
+    // On récupère l'invitation utilisée pour inviter le membre
+    const invites = await member.guild.invites.fetch();
+    const invite = invites.find(inv => inv.uses < inv.maxUses);
+
+    // On récupère l'utilisateur qui a créé l'invitation
+    const inviter = invite ? await member.guild.members.fetch(invite.inviter.id) : null;
     /**************************************************************************/
     const canvas = Canvas.createCanvas(1024, 500);
     let ctx = canvas.getContext("2d");
@@ -86,14 +84,15 @@ module.exports = {
       /*if (myGuildCountChannel) {
         const newCountName = getCounterChannelName(`${member.guild.memberCount}`);
         countChannelName.setName(newCountName);
-      }*/ //=> not working
+      }
       /* ------------------------------------------------------------
               Send the message to the welcome channel
               ID :	welcomeChannel,
               DATA use : member, embed, file.
          ------------------------------------------------------------ */
+      const inv = inviter ? `Tu as été invité par ${inviter.inviter}` : 'Malheureusement, nous ne savons pas qui t\'a invité';
       const msg = await welcomeChannel.send({
-        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}\n:arrow_right: **Invité par** : *WORK IN PROGRESS*\n:arrow_right: **Le serveur compte désormait :** `+getCounterChannelName(`${member.guild.memberCount}`),
+        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}\n:arrow_right: **Invité par** : ${inv}\n:arrow_right: **Le serveur compte désormait :** `+getCounterChannelName(`${member.guild.memberCount}`),
         files: [attachment],
       });
       const reactionEmoji = msg.guild.emojis.cache.find(emoji => emoji.name === 'DrapeauEnclave');
