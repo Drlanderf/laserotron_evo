@@ -3,7 +3,7 @@ const {
   AttachmentBuilder,
   GuildMember,
   Client,
-  DiscordAPIError,
+  DiscordAPIError,EmbedBuilder,
 } = require("discord.js");
 const Guild = require(`../../../schemas/guild`);
 const {
@@ -32,11 +32,16 @@ module.exports = {
       `${myGuildCountChannel}`
     ); //=>DB version
     // On récupère l'invitation utilisée pour inviter le membre
-    const invites = await member.guild.invites.fetch();
-    const invite = invites.find(inv => inv.uses < inv.maxUses);
+    /*const invites = await member.guild.invites.fetch();
+    const invite = invites.find((inv) => inv.uses < inv.maxUses);
 
     // On récupère l'utilisateur qui a créé l'invitation
-    const inviter = invite ? await member.guild.members.fetch(invite.inviter.id) : null;
+    const inviter = invite
+      ? await member.guild.members.fetch(invite.inviter.id)
+      : null;
+    const inv = inviter
+      ? `Tu as été invité par ${inviter.inviter}`
+      : "Malheureusement, nous ne savons pas qui t'a invité";
     /**************************************************************************/
     const canvas = Canvas.createCanvas(1024, 500);
     let ctx = canvas.getContext("2d");
@@ -71,6 +76,36 @@ module.exports = {
     const attachment = new AttachmentBuilder(await canvas.encode(`png`), {
       name: "made_by_doc_landerf.png",
     });
+    /* ------------------------------------------------------------
+Setting up the embed
+ID :	embed
+ ------------------------------------------------------------ */
+    let embed = new EmbedBuilder()
+      .setTitle(`${MyCustomWelcomeMessage}`)
+      .setDescription(
+        `N'oublies pas de passer par le <#617311325047095296> afin d'accéder au discord !
+        N'oublies pas d'indiquer ta plateforme dans <#617313705230860298> !
+        N'oublies pas de clarifier ta situation ici <#681555174631800844>`
+      )
+      .setColor("DarkRed")
+      .setImage("attachment://made_by_doc_landerf.png")
+      .setFooter({
+        iconURL: client.user.displayAvatarURL(),
+        text: `© Doc_Landerf all rights reserved\n`,
+      })
+      .addFields([
+        {
+          name: `:arrow_right: Invité par :`,
+          value: `WORK IN PROGRESS`,
+          inline: true,
+        },
+        {
+          name: `:arrow_right: Le serveur compte désormait :`,
+          value: getCounterChannelName(`${member.guild.memberCount}`),
+          inline: true,
+        },
+      ])
+      .setTimestamp(Date.now());
 
     /* ------------------------------------------------------------
       Try to send the welcome message
@@ -90,12 +125,15 @@ module.exports = {
               ID :	welcomeChannel,
               DATA use : member, embed, file.
          ------------------------------------------------------------ */
-      const inv = inviter ? `Tu as été invité par ${inviter.inviter}` : 'Malheureusement, nous ne savons pas qui t\'a invité';
+
       const msg = await welcomeChannel.send({
-        content: `:wave::skin-tone-2: Hey ${member},\n${MyCustomWelcomeMessage}\n:arrow_right: **Invité par** : ${inv}\n:arrow_right: **Le serveur compte désormait :** `+getCounterChannelName(`${member.guild.memberCount}`),
+        content: `:wave::skin-tone-2: Hey ${member}`,
+        embeds: [embed],
         files: [attachment],
       });
-      const reactionEmoji = msg.guild.emojis.cache.find(emoji => emoji.name === 'DrapeauEnclave');
+      const reactionEmoji = msg.guild.emojis.cache.find(
+        (emoji) => emoji.name === "DrapeauEnclave"
+      );
       await msg.react(reactionEmoji);
     } catch (error) {
       console.log(error);
