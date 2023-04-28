@@ -84,8 +84,8 @@ ID :	embed
       .setTitle(`${MyCustomWelcomeMessage}`)
       .setDescription(
         `N'oublies pas de passer par le <#617311325047095296> afin d'accéder au discord !
-        N'oublies pas d'indiquer ta plateforme dans <#617313705230860298> !
-        N'oublies pas de clarifier ta situation ici <#681555174631800844>`
+        \nN'oublies pas d'indiquer ta plateforme dans <#617313705230860298> !
+        \nN'oublies pas de clarifier ta situation ici <#681555174631800844>`
       )
       .setColor("DarkRed")
       .setImage("attachment://made_by_doc_landerf.png")
