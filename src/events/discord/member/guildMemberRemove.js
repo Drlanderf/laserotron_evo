@@ -19,9 +19,9 @@ module.exports = {
     const countChannelName = client.channels.cache.get(
       `${myGuildCountChannel}`
     ); //=>DB version
-    console.log("[Event] guildMemberRemove : successfully apply");
+    console.log("[Event] guildMemberRemove : successfully called"+Date(Date.now()).toString());
     if (!MyLeavingChannelID) {
-      console.error(`[${member.guild.id}] No Leaving Channel configured.`);
+      console.error(`[${member.guild.id}] No Leaving Channel configured.` + Date(Date.now()).toString());
       return;
     }
     const WelcomeChannel = client.channels.cache.get(MyLeavingChannelID);
@@ -43,8 +43,6 @@ module.exports = {
               ID :	welcomeChannel,
               DATA use : member.id.
          ------------------------------------------------------------ */
-      var d = Date(Date.now());
-      a = d.toString();
       const msg = await WelcomeChannel.send(
         `<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`
       );
@@ -53,7 +51,7 @@ module.exports = {
       );
       await msg.react(reactionEmoji);
       console.log(
-        "[Event] guildMemberRemove : successfully finish" + a
+        "[Event] guildMemberRemove : successfully finish" + Date(Date.now()).toString()
       );
     } catch (error) {
       console.log(error);
