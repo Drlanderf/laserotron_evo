@@ -53,7 +53,7 @@ module.exports = {
       );
       await msg.react(reactionEmoji);
       console.log(
-        "[Event] guildMemberRemove : successfully finish" + a + " " + member.id
+        "[Event] guildMemberRemove : successfully finish" + a
       );
     } catch (error) {
       console.log(error);
