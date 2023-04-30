@@ -13,6 +13,7 @@ module.exports = {
     await loadCommands(client);
     await checkDBGuildId(client);
     await pickPresence(client);
+
     setInterval(() => pickPresence(client), 15 * 1000);
   },
 };

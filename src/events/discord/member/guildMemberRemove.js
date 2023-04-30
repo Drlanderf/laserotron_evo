@@ -19,6 +19,9 @@ module.exports = {
     const countChannelName = client.channels.cache.get(
       `${myGuildCountChannel}`
     ); //=>DB version
+    guild.members.fetch()
+      .then(console.log)
+      .catch(console.error);
     console.log(
       Date(Date.now()).toString() +
         " [Event] guildMemberRemove : successfully called"
