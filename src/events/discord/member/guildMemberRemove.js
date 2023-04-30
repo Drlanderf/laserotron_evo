@@ -43,15 +43,20 @@ module.exports = {
               ID :	welcomeChannel,
               DATA use : member.id.
          ------------------------------------------------------------ */
+      var d = Date(Date.now());
+      a = d.toString();
       const msg = await WelcomeChannel.send(
         `<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`
       );
-      const reactionEmoji = msg.guild.emojis.cache.find(emoji => emoji.name === 'VEF');
+      const reactionEmoji = msg.guild.emojis.cache.find(
+        (emoji) => emoji.name === "VEF"
+      );
       await msg.react(reactionEmoji);
-
+      console.log(
+        "[Event] guildMemberRemove : successfully finish" + a + " " + member.id
+      );
     } catch (error) {
       console.log(error);
     }
-
   },
 };
