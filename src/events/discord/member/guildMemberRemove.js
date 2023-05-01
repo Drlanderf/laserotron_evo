@@ -69,7 +69,7 @@ module.exports = {
             msg.react(reactionEmoji);
             console.log(
               Date(Date.now()).toString() +
-              " [Event] guildMemberRemove (PARTIAL): successfully finish"
+              " [Event] guildMemberRemove (PARTIAL): successfully finish "+member.user.tag
             );
           })
           .catch((error) => {
@@ -89,7 +89,7 @@ module.exports = {
         await msg.react(reactionEmoji);
         console.log(
           Date(Date.now()).toString() +
-            " [Event] guildMemberRemove : successfully finish"
+            " [Event] guildMemberRemove : successfully finish "+member.user.tag
         );
       }
     } catch (error) {
