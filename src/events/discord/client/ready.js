@@ -15,7 +15,9 @@ module.exports = {
     await loadCommands(client);
     await checkDBGuildId(client);
     await pickPresence(client);
-//fetch tous les membres du serveur discord
+    /* ------------------------------------------------------------
+		Sync all member with the cache of the bot
+	   ------------------------------------------------------------ */
     client.guilds.cache.forEach((guild) => {
       guild.members.fetch()
         .then(()=>console.log(Date(Date.now()).toString() +"[Event] Ready : Fetching members for guild "+guild.name))
