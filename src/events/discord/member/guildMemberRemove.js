@@ -21,12 +21,12 @@ module.exports = {
     ); //=>DB version
     console.log(
       Date(Date.now()).toString() +
-        " [Event] guildMemberRemove : successfully called"
+      " [Event] guildMemberRemove : successfully called"
     );
     if (!MyLeavingChannelID) {
       console.error(
         Date(Date.now()).toString() +
-          ` [Event] guildMemberRemove : The guild ID [${member.guild.id}] No Leaving Channel configured.`
+        ` [Event] guildMemberRemove : The guild ID [${member.guild.id}] No Leaving Channel configured.`
       );
       return;
     }
@@ -50,35 +50,46 @@ module.exports = {
               DATA use : member.id.
          ------------------------------------------------------------ */
       if (member.partial) {
-        member = await member
+        /*member = await member
           .fetch()
           .then((fullMember) => {
             console.log(
               Date(Date.now()).toString() +
-                " [Event] guildMemberRemove (PARTIAL): member fetched " +
-                "(" +
-                fullMember +
-                " )"
-            );
-            const msg = WelcomeChannel.send(
-              `<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`
-            );
-            const reactionEmoji = msg.guild.emojis.cache.find(
-              (emoji) => emoji.name === "VEF"
-            );
-            msg.react(reactionEmoji);
-            console.log(
-              Date(Date.now()).toString() +
-              " [Event] guildMemberRemove (PARTIAL): successfully finish "+member.user.tag
+              " [Event] guildMemberRemove (PARTIAL): member fetched " +
+              "(" +
+              fullMember +
+              " )"
             );
           })
           .catch((error) => {
             console.log(
               Date(Date.now()).toString() +
-                " [Event] guildMemberRemove (PARTIAL): Something went wrong when fetching the member: ",
+              " [Event] guildMemberRemove (PARTIAL): Something went wrong when fetching the member: ",
               error
             );
-          });
+          });*/
+        const msg = WelcomeChannel.send(`<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`).catch((error) => {
+          console.log(
+            Date(Date.now()).toString() +
+            " [Event] guildMemberRemove (PARTIAL): Something went wrong when sending the message: ",
+            error
+          );
+        });
+        const reactionEmoji = msg.guild.emojis.cache.find(
+          (emoji) => emoji.name === "VEF"
+        );
+        await msg.react(reactionEmoji).catch((error) => {
+          console.log(
+            Date(Date.now()).toString() +
+            " [Event] guildMemberRemove (PARTIAL): Something went wrong when react to the message: ",
+            error
+          );
+        });
+        console.log(
+          Date(Date.now()).toString() +
+          " [Event] guildMemberRemove (PARTIAL): successfully finish " +
+          member.user.tag
+        );
       } else {
         const msg = await WelcomeChannel.send(
           `<@${member.id}> a été placé dans une cuve de VEF. <a:VEF:695250802465439745>`
@@ -89,7 +100,8 @@ module.exports = {
         await msg.react(reactionEmoji);
         console.log(
           Date(Date.now()).toString() +
-            " [Event] guildMemberRemove : successfully finish "+member.user.tag
+          " [Event] guildMemberRemove : successfully finish " +
+          member.user.tag
         );
       }
     } catch (error) {
